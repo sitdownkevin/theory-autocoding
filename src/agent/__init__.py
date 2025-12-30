@@ -15,7 +15,7 @@ _ = load_dotenv(find_dotenv())
 
 
 class AgentType(Enum):
-    CODING = auto()
+    OPEN_CODING = auto()
 
 
 class AgentConfig(BaseModel):
@@ -132,14 +132,17 @@ class BaseAgent(ABC):
             self._log(f"Task {failed_task.task_id} failed: {str(exc)}", level="error")
             return failed_task
 
-    async def run_tasks(self) -> TasksRunningResult:
+    async def run_tasks(
+        self, max_concurrent_requests: int = 20, request_gap: float = 0.2
+    ) -> TasksRunningResult:
         tasks_running_result = TasksRunningResult()
 
         if not self.config.task_ids:
             return tasks_running_result
 
-        semaphore = asyncio.Semaphore(3)  # Limit concurrent network calls
-        request_gap = 0.2  # seconds between launches to smooth outbound traffic
+        semaphore = asyncio.Semaphore(
+            max_concurrent_requests
+        )  # Limit concurrent network calls
         progress = tqdm(
             total=len(self.config.task_ids), desc="Running tasks", unit="task"
         )
@@ -268,9 +271,20 @@ class BaseAgent(ABC):
             # model_validate_json expects a JSON string, not a Python dict
             return TaskSchema.model_validate_json(f.read())
 
-    def _log(self, message: str, level: Literal["info", "warning", "error"] = "info") -> None:
+    def _log(
+        self, message: str, level: Literal["info", "warning", "error"] = "info"
+    ) -> None:
         # Persist agent-scoped logs to disk instead of printing to stdout
         self.logs_dir.mkdir(parents=True, exist_ok=True)
         timestamp = datetime.now().isoformat()
-        with open(self.logs_dir / f"{self.config.agent_id}.log", "a", encoding="utf-8") as f:
+        with open(
+            self.logs_dir / f"{self.config.agent_id}.log", "a", encoding="utf-8"
+        ) as f:
             f.write(f"[{timestamp}] [{level.upper()}] {message}\n")
+
+    def _get_successful_tasks(self) -> list[TaskSchema]:
+        return [
+            self._load_task_from_disk(task_id)
+            for task_id in self.config.task_ids
+            if self._load_task_from_disk(task_id).status == TaskStatus.COMPLETED
+        ]
