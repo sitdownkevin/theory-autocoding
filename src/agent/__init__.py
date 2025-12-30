@@ -16,6 +16,7 @@ _ = load_dotenv(find_dotenv())
 
 class AgentType(Enum):
     OPEN_CODING = auto()
+    AXIAL_CODING = auto()
 
 
 class AgentConfig(BaseModel):
