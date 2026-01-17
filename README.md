@@ -57,7 +57,7 @@ theory-autoencoder/
 **示例：开放编码数据准备**
 
 ```bash
-uv run python scripts/generate_input_texts/open_coding.py
+uv run scripts/generate_input_texts/open_coding.py
 ```
 
 该脚本会：
@@ -98,13 +98,13 @@ uv run python scripts/invoke/open_coding.py
 **示例：分析开放式编码结果**
 
 ```bash
-uv run python scripts/analyst/open_coding.py
+uv run scripts/analyst/open_coding.py
 ```
 
 或使用 Jupyter Notebook 进行交互式分析：
 
 ```bash
-uv run jupyter notebook scripts/analyst/open-coding.ipynb
+scripts/analyst/open-coding.ipynb
 ```
 
 分析脚本可以：
@@ -132,6 +132,7 @@ uv sync
 
 ```bash
 OPENAI_API_KEY=your_api_key_here
+OPENAI_BASE_URL=your_api_base_url
 ```
 
 ### 运行示例
@@ -141,19 +142,19 @@ OPENAI_API_KEY=your_api_key_here
 ```bash
 # 将原始数据放置在 data/raw/ 目录
 # 确保数据格式符合脚本要求
-uv run python scripts/generate_input_texts/open_coding.py
+uv run scripts/generate_input_texts/open_coding.py
 ```
 
 2. **执行编码**
 
 ```bash
-uv run python scripts/invoke/open_coding.py
+uv run scripts/invoke/open_coding.py
 ```
 
 3. **分析结果**
 
 ```bash
-uv run python scripts/analyst/open_coding.py
+uv run scripts/analyst/open_coding.py
 ```
 
 ## 🧩 核心架构
