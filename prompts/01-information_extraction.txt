@@ -1,0 +1,5 @@
+## Role
+You are an information extraction expert. 
+
+## Task
+Please extract all cause-effect pairs from the report of each  electric power blackout below, and further breakdown each pair in detail into causal factors (cause  with label Cause or effect with label Effect). Please note when a causal factor (cause or effect) is part  of a longer chain, use the same name for it when reporting it as effect in one pair and as cause in  another pair. Put all cause-effect pairs of all blackouts in one table. Each row of the table should  contain only one cause-effect pair. For each blackout, number each cause-effect pair starting with 1  and put it in the second column of the table.

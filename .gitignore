@@ -12,5 +12,5 @@ wheels/
 logs/
 data/
 .env
-prompts/
+# prompts/
 deep_agent/
