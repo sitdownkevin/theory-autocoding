@@ -13,3 +13,4 @@ logs/
 data/
 .env
 prompts/
+deep_agent/

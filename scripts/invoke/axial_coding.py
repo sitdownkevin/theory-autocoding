@@ -28,7 +28,7 @@ if __name__ == "__main__":
     with open(Path("data") / "input_texts" / "axial_coding.json", "r") as f:
         input_texts = json.load(f)
 
-    input_texts = input_texts[:2]
+    # input_texts = input_texts[:2]
 
     agent = AxialCodingAgent()
     print(agent.config.agent_id)

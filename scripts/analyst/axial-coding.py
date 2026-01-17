@@ -21,11 +21,11 @@ class AxialCodingAgent(BaseAgent):
         )
 
     def get_llm(self) -> ChatOpenAI:
-        return ChatOpenAI(model="gpt-4o-mini")
+        return ChatOpenAI(model="gpt-4o")
 
     
 if __name__ == "__main__":
-    agent = AxialCodingAgent(agent_id='5bf61634-5fd9-4c45-b699-d85c1de17bf2')
+    agent = AxialCodingAgent(agent_id='324de497-8e0c-4342-8d3d-0981e508afc8')
     print(agent.config.agent_id)
 
     successful_tasks = agent._get_successful_tasks()
