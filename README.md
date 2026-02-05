@@ -2,11 +2,6 @@
 
 基于大语言模型（LLM）的扎根理论自动化分析工具。本项目通过多阶段的编码流程，实现对文本数据的系统性质性分析。
 
-## 📋 项目概述
-
-扎根理论是一种系统性的质性研究方法论，通过从数据中归纳出理论框架。本项目将扎根理论的经典三阶段编码过程（开放编码、轴心编码、选择性编码）自动化，利用 LLM 的理解和推理能力，高效地处理大规模文本数据。
-
-## 🏗️ 项目结构
 
 ```
 theory-autoencoder/
@@ -84,12 +79,6 @@ uv run python scripts/invoke/open_coding.py
 - 保存任务状态和结果到磁盘
 - 生成执行日志
 
-**核心特性**：
-- **任务状态管理**：PENDING、COMPLETED、FAILED
-- **并发控制**：使用信号量限制最大并发请求数
-- **错误重试**：内置退避机制，连续失败时自动暂停
-- **断点续传**：支持从中断的任务继续执行
-- **进度跟踪**：使用 tqdm 显示实时进度
 
 ### 4. 结果分析（Analyst）
 
@@ -184,31 +173,6 @@ uv run scripts/analyst/open_coding.py
 - `TasksCreatedResult`：任务创建结果
 - `TasksRunningResult`：任务执行结果
 
-## 📊 编码阶段详解
-
-### 第一阶段：开放式编码（Open Coding）
-
-**目标**：识别文本中的概念和现象，为其命名和分类
-
-**输入**：原始文本数据
-**输出**：初始概念标签列表
-**工具**：`scripts/generate_input_texts/open_coding.py`, `scripts/invoke/open_coding.py`
-
-### 第二阶段：轴心编码（Axial Coding）
-
-**目标**：将开放式编码产生的概念按照其属性和维度重新组合，建立概念之间的联系
-
-**输入**：开放式编码的结果
-**输出**：主要类别及其关联的子类别
-**工具**：`scripts/generate_input_texts/axial_coding.py`, `scripts/invoke/axial_coding.py`
-
-### 第三阶段：选择性编码（Selective Coding）
-
-**目标**：识别核心类别，建立理论框架
-
-**输入**：轴心编码的结果
-**输出**：核心类别及其与其他类别的关系
-**工具**：手动或半自动执行
 
 ## 🔧 高级功能
 
@@ -236,55 +200,4 @@ await agent.run_tasks(
 
 ```bash
 tail -f logs/<agent-id>.log
-```
-
-## 📚 扩展开发
-
-### 添加新的编码类型
-
-1. 创建新的 Agent 类继承自 `BaseAgent`：
-
-```python
-class SelectiveCodingAgent(BaseAgent):
-    def __init__(self, agent_id=None, logs_dir=None, data_dir=None):
-        super().__init__(
-            agent_type=AgentType.SELECTIVE_CODING,
-            agent_id=agent_id,
-            logs_dir=logs_dir,
-            data_dir=data_dir,
-        )
-
-    def get_llm(self):
-        return ChatOpenAI(model="gpt-4o")
-```
-
-2. 在 `AgentType` 枚举中添加新类型：
-
-```python
-class AgentType(Enum):
-    OPEN_CODING = auto()
-    AXIAL_CODING = auto()
-    SELECTIVE_CODING = auto()  # 新增
-```
-
-3. 创建对应的生成输入文本和调用脚本
-
-## 🛠️ 技术栈
-
-- **Python 3.12+**
-- **LangChain**：LLM 应用框架
-- **OpenAI GPT-4o-mini**：核心 LLM 模型
-- **Pydantic**：数据验证和模型定义
-- **asyncio**：异步任务执行
-- **HDBSCAN**：聚类分析
-- **sentence-transformers**：文本嵌入
-- **scikit-learn**：机器学习工具
-- **pandas/numpy**：数据处理
-- **matplotlib/seaborn**：数据可视化
-
-## 📝 注意事项
-
-1. **API 配额**：大规模数据处理会消耗大量 API 配额，建议先在小规模数据上测试
-2. **并发限制**：根据 API 速率限制调整 `max_concurrent_requests` 参数
-3. **数据隐私**：确保处理的数据符合隐私保护要求
-4. **结果验证**：LLM 编码结果需要人工验证和校准
+``
